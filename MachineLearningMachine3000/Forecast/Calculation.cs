@@ -17,7 +17,7 @@ namespace MachineLearningMachine3000.Forecast
     public class Calculation
     {
         
-        public List<ResultSet> ForecastCalculate(List<FactCase> factCases)
+        public List<ResultSet> ForecastCalculate(List<FactCase> factCases, ForecastParameter parameter)
         {
             
             List<ModelInput> data = new List<ModelInput>();
@@ -39,26 +39,34 @@ namespace MachineLearningMachine3000.Forecast
             MLContext mlContext = new MLContext();
 
             IDataView dataView = mlContext.Data.LoadFromEnumerable(data);
-        
 
-        //var iidSpikeEstimator = mlContext.Transforms.DetectIidSpike(
-        //        outputColumnName: "Prediction",
-        //            inputColumnName: nameof(ModelInput.Value),
-        //        confidence: 95,
-        //    pvalueHistoryLength: 12
-        //    );
 
-        //var iidSpikeTransform = iidSpikeEstimator.Fit(dataView);
-        //var iidSpikeTransformedData = iidSpikeTransform.Transform(dataView);
+            //var iidSpikeEstimator = mlContext.Transforms.DetectIidSpike(
+            //        outputColumnName: "Prediction",
+            //            inputColumnName: nameof(ModelInput.Value),
+            //        confidence: 95,
+            //    pvalueHistoryLength: 12
+            //    );
+
+            //var iidSpikeTransform = iidSpikeEstimator.Fit(dataView);
+            //var iidSpikeTransformedData = iidSpikeTransform.Transform(dataView);
+
+            if (parameter.windowSize<3) parameter.windowSize = 3;
+            if (parameter.windowSize > parameter.seriesLength) parameter.seriesLength = parameter.windowSize + 1;
+            if (parameter.windowSize > ( parameter.trainSize*2)) parameter.trainSize =  (1 + parameter.windowSize)*2 ;
+            if (parameter.horizon == 0 ) parameter.horizon = 1 ;
+            if (parameter.confidenceLevel > 1) parameter.confidenceLevel = 0.99f;
+            if(parameter.confidenceLevel < 0) parameter.confidenceLevel = 0 ;
+
 
             var forecastingPipeline = mlContext.Forecasting.ForecastBySsa(
                 outputColumnName: nameof(ModelOutput.ForecastedValues),
                 inputColumnName: nameof(ModelInput.Value),
-                windowSize: 7,
-                seriesLength: 1183,
-                trainSize: 1000,
-                horizon: 500,
-                confidenceLevel: 0.95f,
+                windowSize: parameter.windowSize,
+                seriesLength: parameter.seriesLength,
+                trainSize: parameter.trainSize,
+                horizon: parameter.horizon,
+                confidenceLevel: parameter.confidenceLevel,
                 confidenceLowerBoundColumn: nameof(ModelOutput.ConfidenceIntervalLowerBounds),
                 confidenceUpperBoundColumn: nameof(ModelOutput.ConfidenceIntervalUpperBounds)
                 );

@@ -1,6 +1,7 @@
 ﻿@page "/forecast"
-@*@attribute [StreamRendering]*@
-@rendermode 
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@attribute [StreamRendering]
+@using Microsoft.AspNetCore.Components.Web
 
 @inject IFactCaseService FactCaseService
 @inject Calculation calc
@@ -11,33 +12,37 @@
 
 <PageTitle>Foracast und Datenview</PageTitle>
 
-<h1>Ausgangsdaten</h1>
+<h1>- Forcasting Machine -</h1>
+
 <hr />
-<div class="row">
-    <div class="col">
-        <button type="button" class="btn btn-outline-primary" @onclick="GetCases"> Forecast erstellen </button>
+<form>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary" @onclick="Calculate"> Forecast erstellen </button>
+        </div>
+        <div class="col">
+            <label class="control-label">Windowsize</label>
+            <input class="form-control"  @bind="@parameter.windowSize" placeholder="7" />
+        </div>
+        <div class="col">
+            <label class="control-label">seriesLength</label>
+            <input class="form-control"  @bind="@parameter.seriesLength" placeholder="1183" />
+        </div>
+        <div class="col">
+            <label class="control-label" >trainSize</label>
+            <input class="form-control"@bind="@parameter.trainSize" placeholder="1000" />
+        </div>
+        <div class="col">
+            <label class="control-label" >horizon</label>
+            <input class="form-control" @bind="@parameter.horizon" placeholder="38" />
+        </div>
+        <div class="col">
+            <label class="control-label">confidenceLevel</label>
+            <input class="form-control"  @bind="@parameter.confidenceLevel" placeholder="0.95" />
+        </div>
     </div>
-    <div class="col">
-        <label class="control-label">Windowsize</label>
-        <input class="form-control" placeholder="7" />
-    </div>
-    <div class="col">
-        <label class="control-label">seriesLength</label>
-        <input class="form-control" placeholder="1183" />
-    </div>
-    <div class="col">
-        <label class="control-label">trainSize</label>
-        <input class="form-control" placeholder="1000" />
-    </div>
-    <div class="col">
-        <label class="control-label">horizon</label>
-        <input class="form-control" placeholder="38" />
-    </div>
-    <div class="col">
-        <label class="control-label">confidenceLevel</label>
-        <input class="form-control" placeholder="0.95" />
-    </div>
-</div>
+</form> 
+
 <hr />
 <div class="table-container">
 
@@ -130,7 +135,7 @@
 }
 else
 {
-    <div >
+    <div>
         <p><em>No Forecast available..</em></p>
     </div>
 }
@@ -152,16 +157,12 @@ else
 
     List<FactCase> factCases = new List<FactCase>();
     List<ResultSet>? results = null;
-    int windowSize = new int();
-    int seriesLength = new int();
-    int trainSize = new int();
-    int horizon = new int();
-    float confidenceLevel = new int();
+    ForecastParameter parameter = new ForecastParameter();
 
     protected override async Task OnInitializedAsync()
     {
 
-        //factCases = await FactCaseService.GetFactCasesAsync();
+        factCases = await FactCaseService.GetFactCasesAsync();
 
         //results = calc.ForecastCalculate(factCases);
 
@@ -171,22 +172,13 @@ else
 
     void Calculate()
     {
-        results = calc.ForecastCalculate(factCases);
+
+        results = calc.ForecastCalculate(factCases, parameter);
+
         StateHasChanged();
 
     }
 
-    async Task GetCases()
-        {
-            factCases = await FactCaseService.GetFactCasesAsync();
-        }
-
-    Task Calc()
-    {
-        Calculate();
-        return Task.CompletedTask;
-
-    }
 
 
 }
