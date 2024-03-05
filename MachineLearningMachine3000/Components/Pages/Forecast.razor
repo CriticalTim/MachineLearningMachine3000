@@ -1,11 +1,9 @@
-﻿@page "/weather"
+﻿@page "/forecast"
 @attribute [StreamRendering]
 
 <PageTitle>Weather</PageTitle>
 
-<h1>Weather</h1>
-
-<p>This component demonstrates showing data.</p>
+<h1>DataModeling</h1>
 
 @if (forecasts == null)
 {
@@ -16,8 +14,8 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
+                <th>Datum</th>
+                <th>Eingaenge</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>
             </tr>
