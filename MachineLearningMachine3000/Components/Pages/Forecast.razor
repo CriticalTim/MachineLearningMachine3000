@@ -5,8 +5,10 @@
 
 @inject IFactCaseService FactCaseService
 @inject Calculation calc
-@using MachineLearningMachine3000.Forecast;
 
+@using Blazorise.Charts;
+
+@using MachineLearningMachine3000.Forecast;
 @using MachineLearningMachine3000.Data;
 @using MachineLearningMachine3000.Services;
 
@@ -22,26 +24,26 @@
         </div>
         <div class="col">
             <label class="control-label">Windowsize</label>
-            <input class="form-control"  @bind="@parameter.windowSize" placeholder="7" />
+            <input class="form-control" @bind="@parameter.windowSize" placeholder="7" />
         </div>
         <div class="col">
             <label class="control-label">seriesLength</label>
-            <input class="form-control"  @bind="@parameter.seriesLength" placeholder="1183" />
+            <input class="form-control" @bind="@parameter.seriesLength" placeholder="1183" />
         </div>
         <div class="col">
-            <label class="control-label" >trainSize</label>
-            <input class="form-control"@bind="@parameter.trainSize" placeholder="1000" />
+            <label class="control-label">trainSize</label>
+            <input class="form-control" @bind="@parameter.trainSize" placeholder="1000" />
         </div>
         <div class="col">
-            <label class="control-label" >horizon</label>
+            <label class="control-label">horizon</label>
             <input class="form-control" @bind="@parameter.horizon" placeholder="38" />
         </div>
         <div class="col">
             <label class="control-label">confidenceLevel</label>
-            <input class="form-control"  @bind="@parameter.confidenceLevel" placeholder="0.95" />
+            <input class="form-control" @bind="@parameter.confidenceLevel" placeholder="0.95" />
         </div>
     </div>
-</form> 
+</form>
 
 <hr />
 <div class="table-container">
@@ -149,9 +151,6 @@ else
 
 
 
-
-
-
 @code {
 
 
@@ -164,20 +163,17 @@ else
 
         factCases = await FactCaseService.GetFactCasesAsync();
 
-        //results = calc.ForecastCalculate(factCases);
-
     }
 
 
 
     void Calculate()
     {
-
         results = calc.ForecastCalculate(factCases, parameter);
-
         StateHasChanged();
-
     }
+
+   
 
 
 
