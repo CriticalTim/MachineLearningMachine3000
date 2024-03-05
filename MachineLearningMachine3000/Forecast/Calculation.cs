@@ -57,7 +57,7 @@ namespace MachineLearningMachine3000.Forecast
                 windowSize: 7,
                 seriesLength: 1183,
                 trainSize: 1000,
-                horizon: 38,
+                horizon: 500,
                 confidenceLevel: 0.95f,
                 confidenceLowerBoundColumn: nameof(ModelOutput.ConfidenceIntervalLowerBounds),
                 confidenceUpperBoundColumn: nameof(ModelOutput.ConfidenceIntervalUpperBounds)
