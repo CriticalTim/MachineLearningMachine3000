@@ -25,82 +25,88 @@
     else
     {
 
+<div class="containerbla">
+    <h1>Alte Werte</h1>
+    <hr />
+    <div class="table1">
 
-        <h1>Alte Werte</h1>
-        <hr />
-        <div class="table1">
-
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>    Eingänge Neu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var fact in factCases)
+                {
                     <tr>
-                        <th>Datum</th>
-                        <th>    Eingänge Neu</th>
+                        <td>@fact.DateId.ToString()</td>
+                        <td><div class="vertical-line"></div></td>
+                        <td>@fact.SummeVonEingangNeu</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var fact in factCases)
-                    {
-                        <tr>
-                            <td>@fact.DateId.ToString()</td>
-                            <td><div class="vertical-line"></div></td>
-                            <td>@fact.SummeVonEingangNeu</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    <div class="vertical-line"></div>
-    @if (results == null)
-    {
-        <p><em>No Forecast available..</em></p>
-    }
-    else
-    {
-        <h1>Forecast</h1>
-        <hr />
-        <div class="table2">
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Datum</th>
-                        <th>    Eingänge Neu</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var result in results)
-                    {
-                        <tr>
-                            <td>@result.Date.ToShortDateString()</td>
-                            <td><div class="vertical-line"></div></td>
-                            <td>@result.Value</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+    }
+   
+        <div class="vertical-line"></div>
+        @if (results == null)
+        {
+            <p><em>No Forecast available..</em></p>
+        }
+        else
+        {
+            <div class="containerbla">
+                <h1>Forecast</h1>
+                <hr />
+                <div class="table2">
 
-@code {
-    List<FactCase> factCases = new List<FactCase>();
-    List<ResultSet>? results = null;
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>    Eingänge Neu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var result in results)
+                            {
+                                <tr>
+                                    <td>@result.Date.ToShortDateString()</td>
+                                    <td><div class="vertical-line"></div></td>
+                                    <td>@result.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    protected override async Task OnInitializedAsync()
+        }
+    </div>
+
+    @code {
+        List<FactCase> factCases = new List<FactCase>();
+        List<ResultSet>? results = null;
+
+protected override async Task OnInitializedAsync()
     {
 
         factCases = await FactCaseService.GetFactCasesAsync();
 
-        //results = calc.ForecastCalculate(factCases);
+        results = calc.ForecastCalculate(factCases);
 
     }
 
-    void CalculateForcast()
+    Task CalculateForcast()
     {
         results = calc.ForecastCalculate(factCases);
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
 
-}
+    }

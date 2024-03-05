@@ -2,6 +2,10 @@
 .table-container {
     display: flex;
 }
+.containerbla {
+    display: flex;
+    flex-direction: column;
+}
 .table1 {
     left:100%;
     height: 50vh;
