@@ -1,4 +1,7 @@
-﻿namespace MachineLearningMachine3000.Forecast
+﻿using Microsoft.ML.Data;
+using System.IO;
+
+namespace MachineLearningMachine3000.Forecast
 {
     public class ModelInput
     {

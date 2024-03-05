@@ -1,33 +1,55 @@
-﻿using 
+﻿using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.TimeSeries;
+using Microsoft.ML.Transforms.TimeSeries;
+//using OxyPlot;
+//using OxyPlot.Series;
+using System.IO;
 using System.Data;
+using MachineLearningMachine3000.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace MachineLearningMachine3000.Forecast
 {
     public class Calculation
     {
-        static readonly string _dataPath = "C:\\Users\\TimStorbeck\\source\\repos\\ForecastingDP\\ForecastingDP\\VorherSchnittAnfang.csv"; // Path to your CSV file
-        static readonly string _endDataPath = "C:\\Users\\TimStorbeck\\source\\repos\\ForecastingDP\\ForecastingDP\\Nachher_2202Bis0403.csv"; // Path to your CSV file
         
+        public List<ResultSet> ForecastCalculate(List<FactCase> factCases)
+        {
+            
+            List<ModelInput> data = new List<ModelInput>();
+            List<ResultSet> results = new List<ResultSet>();
+            int i= 0;
+
+            DateTime startDate = DateTime.ParseExact(factCases.Select(x => x.DateId).Last().ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
+
+            foreach (var factCase in factCases)
+            {
+                data.Add(new ModelInput
+                {
+                    Time = DateTime.ParseExact(factCase.DateId.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture),
+                    Value = factCase.SummeVonEingangNeu
+                });
+            }
+
+
             MLContext mlContext = new MLContext();
 
+            IDataView dataView = mlContext.Data.LoadFromEnumerable(data);
+        
 
-            IDataView dataView = mlContext.Data.LoadFromTextFile<ModelInput>(
-                _dataPath,
-                hasHeader: true,
-                separatorChar: ',');
+        //var iidSpikeEstimator = mlContext.Transforms.DetectIidSpike(
+        //        outputColumnName: "Prediction",
+        //            inputColumnName: nameof(ModelInput.Value),
+        //        confidence: 95,
+        //    pvalueHistoryLength: 12
+        //    );
 
-            //var iidSpikeEstimator = mlContext.Transforms.DetectIidSpike(
-            //        outputColumnName: "Prediction",
-            //            inputColumnName: nameof(ModelInput.Value),
-            //        confidence: 95,
-            //    pvalueHistoryLength: 12
-            //    );
-
-            //var iidSpikeTransform = iidSpikeEstimator.Fit(dataView);
-            //var iidSpikeTransformedData = iidSpikeTransform.Transform(dataView);
-
-
-
+        //var iidSpikeTransform = iidSpikeEstimator.Fit(dataView);
+        //var iidSpikeTransformedData = iidSpikeTransform.Transform(dataView);
 
             var forecastingPipeline = mlContext.Forecasting.ForecastBySsa(
                 outputColumnName: nameof(ModelOutput.ForecastedValues),
@@ -41,37 +63,28 @@ namespace MachineLearningMachine3000.Forecast
                 confidenceUpperBoundColumn: nameof(ModelOutput.ConfidenceIntervalUpperBounds)
                 );
 
-
-
-
             var model = forecastingPipeline.Fit(dataView);
 
 
             var forecastingEngine = model.CreateTimeSeriesEngine<ModelInput, ModelOutput>(mlContext);
-            ModelOutput forecast = forecastingEngine.Predict();
+            ModelOutput forecasts = forecastingEngine.Predict(); 
 
-            DateTime enddate = new DateTime(2024, 01, 27);
+            
 
-            using (StreamWriter sw = File.CreateText(_endDataPath))
+            foreach (var forecast in forecasts.ForecastedValues)
             {
-                for (int i = 0; i < forecast.ForecastedValues.Length; i++)
+                
+                results.Add(new ResultSet
                 {
-                    sw.WriteLine($"{Convert.ToInt32(forecast.ForecastedValues[i])}, {int.Parse(enddate.AddDays(1 + i).ToString("yyyyMMdd"))}");
-                }
-            }
-            /*, {forecast.ForecastedValues[i]}, {forecast.ForecastedValues[i]}*/
-
-            Console.WriteLine("Forecasted Values:");
-            foreach (var value in forecast.ForecastedValues)
-            {
-                Console.WriteLine(value);
+                    Date = startDate.AddDays(1 + i),
+                    Value = Convert.ToInt32(forecast)
+                });
+                i++;
             }
 
-            //Plotter.Plot(_endDataPath);
 
+            return results;
 
-        
-    }
-
-    
+        }              
+    }   
 }

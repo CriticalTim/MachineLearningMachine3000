@@ -1,62 +1,106 @@
 ﻿@page "/forecast"
 @attribute [StreamRendering]
 
-<PageTitle>Weather</PageTitle>
+@inject IFactCaseService FactCaseService
+@inject Calculation calc
+@using MachineLearningMachine3000.Forecast;
 
-<h1>DataModeling</h1>
+@using MachineLearningMachine3000.Data;
+@using MachineLearningMachine3000.Services;
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Eingaenge</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<PageTitle>Foracast und Datenview</PageTitle>
+
+<h1>Ausgangsdaten</h1>
+<hr />
+<div>
+    <button type="button" class="btn btn-outline-primary" @onclick="CalculateForcast"> Forecast erstellen </button>
+</div>
+<hr />
+<div class="table-container">
+
+    @if (factCases == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+
+
+        <h1>Alte Werte</h1>
+        <hr />
+        <div class="table1">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>    Eingänge Neu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fact in factCases)
+                    {
+                        <tr>
+                            <td>@fact.DateId.ToString()</td>
+                            <td><div class="vertical-line"></div></td>
+                            <td>@fact.SummeVonEingangNeu</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="vertical-line"></div>
+    @if (results == null)
+    {
+        <p><em>No Forecast available..</em></p>
+    }
+    else
+    {
+        <h1>Forecast</h1>
+        <hr />
+        <div class="table2">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>    Eingänge Neu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var result in results)
+                    {
+                        <tr>
+                            <td>@result.Date.ToShortDateString()</td>
+                            <td><div class="vertical-line"></div></td>
+                            <td>@result.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    List<FactCase> factCases = new List<FactCase>();
+    List<ResultSet>? results = null;
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
 
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        factCases = await FactCaseService.GetFactCasesAsync();
+
+        //results = calc.ForecastCalculate(factCases);
+
     }
 
-    private class WeatherForecast
+    void CalculateForcast()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        results = calc.ForecastCalculate(factCases);
+        StateHasChanged();
     }
+
+
 }

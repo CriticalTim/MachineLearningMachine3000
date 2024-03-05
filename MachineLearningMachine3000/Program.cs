@@ -1,5 +1,7 @@
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
+using MachineLearningMachine3000.Forecast;
+using MachineLearningMachine3000.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -9,8 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddDbContext<SQLContext>(options =>
+builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IFactCaseService, FactCaseService>();
+builder.Services.AddScoped<Calculation>();
+
 
 var app = builder.Build();
 
