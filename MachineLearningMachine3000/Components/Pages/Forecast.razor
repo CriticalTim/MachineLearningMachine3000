@@ -25,23 +25,23 @@
         </div>
         <div class="col">
             <label class="control-label">Windowsize</label>
-            <input class="form-control" @bind="@parameter.windowSize" placeholder="7" />
+            <input class="form-control" @bind="@parameter.windowSize" />
         </div>
         <div class="col">
             <label class="control-label">seriesLength</label>
-            <input class="form-control" @bind="@parameter.seriesLength" placeholder="1183" />
+            <input class="form-control" @bind="@parameter.seriesLength" />
         </div>
         <div class="col">
             <label class="control-label">trainSize</label>
-            <input class="form-control" @bind="@parameter.trainSize" placeholder="1000" />
+            <input class="form-control" @bind="@parameter.trainSize" />
         </div>
         <div class="col">
             <label class="control-label">horizon</label>
-            <input class="form-control" @bind="@parameter.horizon" placeholder="38" />
+            <input class="form-control" @bind="@parameter.horizon" />
         </div>
         <div class="col">
             <label class="control-label">confidenceLevel</label>
-            <input class="form-control" @bind="@parameter.confidenceLevel" placeholder="0.95" />
+            <input class="form-control" @bind="@parameter.confidenceLevel" />
         </div>
     </div>
 </form>
@@ -56,8 +56,8 @@
     else
     {
 
-        <div class="containerbla" style="margin-right:20%;">
-            <h1>Alte Werte</h1>
+        <div class="containerbla" style="margin-right:2%;">
+            <h1>Ausgangsdaten</h1>
             <hr />
             <div class="table1">
 
@@ -82,9 +82,6 @@
             </div>
         </div>
     }
-
-
-
     @if (results == null)
     {
         <div style="margin-top: 50%;">
@@ -94,7 +91,7 @@
     }
     else
     {
-        <div class="containerbla">
+        <div class="containerbla" style="margin-right:2%;">
             <h1>Forecast</h1>
             <hr />
             <div class="table2">
@@ -121,17 +118,48 @@
         </div>
 
     }
+
+
+    @if (resultsNeu != null)
+    { 
+        <div class="containerbla">
+            <h1>Forecast Neu</h1>
+            <hr />
+            <div class="table2">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>    Eingänge Neu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in resultsNeu)
+                        {
+                            <tr>
+                                <td>@result.Date.ToShortDateString()</td>
+                                <td><div class="vertical-line"></div></td>
+                                <td>@result.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    }
 </div>
 <hr />
 @if (results != null)
 {
     <div class="row">
         <div class="col">
-            <button type="button" class="btn btn-outline-primary" @onclick="Commit"> CommitForecast</button>
+            <button type="button" class="btn btn-outline-primary" @onclick="Commit"> Speichere Forecast auf Datenbank</button>
         </div>
 
         <div class="col">
-            <input class="form-control" @bind="@dbSpeichernSuccess" placeholder="Speichern nicht möglich." disabled />
+            <input class="form-control" @bind="@dbSpeichernSuccess" placeholder="Noch nichts gespeichert." disabled />
         </div>
     </div>
 
@@ -143,9 +171,19 @@ else
     </div>
 }
 <hr />
-<h1> Graphischer Vergleich</h1>
-<hr />
+@if (@dbSpeichernSuccess == "Erfolgreich gespeichert")
+{
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-primary" @onclick="ParameterTuning"> Beste Forecast Parameter finden</button>
+        </div>
 
+        <div class="col">
+            <input class="form-control" placeholder="Durch diese Aktion werden verschiedene Parameter ausgetestet bis die Vorhersage am besten zu schon bestehenden Daten past" disabled />
+        </div>
+    </div>
+    <hr />
+}
 
 
 
@@ -158,6 +196,7 @@ else
     List<FactCase> factCases = new List<FactCase>();
     List<FactCaseForecast> factCaseForecasts = new List<FactCaseForecast>();
     List<ResultSet>? results = null;
+    List<ResultSet>? resultsNeu = null;
     ForecastParameter parameter = new ForecastParameter();
     String dbSpeichernSuccess = String.Empty;
 
@@ -168,8 +207,6 @@ else
 
     }
 
-
-
     void Calculate()
     {
         results = calc.ForecastCalculate(factCases, parameter);
@@ -178,10 +215,12 @@ else
 
     public async Task Commit()
     {
-        if (results == null) {
+        if (results == null)
+        {
             dbSpeichernSuccess = "Speichern fehlgeschlagen. Resultate Tabelle leer.";
             StateHasChanged();
-            return; }
+            return;
+        }
         try
         {
             foreach (var result in results)
@@ -209,6 +248,16 @@ else
 
 
 
+    }
+
+    async Task ParameterTuning()
+    {
+        //factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
+
+        ////neue Parameter
+
+        //resultsNeu = calc.ForecastCalculate(factCases, parameter);
+        //StateHasChanged();
     }
 
 
