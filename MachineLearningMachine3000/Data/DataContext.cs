@@ -11,5 +11,7 @@ namespace MachineLearningMachine3000.Data
 
         public DbSet<FactCase> FactCases { get; set; }
 
+        public DbSet<FactCaseForecast> FactCasesForecast { get; set; }
+
     }
 }

@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Components.Web
 
 @inject IFactCaseService FactCaseService
+@inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
 
 @using Blazorise.Charts;
@@ -126,11 +127,11 @@
 {
     <div class="row">
         <div class="col">
-            <button type="button" class="btn btn-outline-primary"> CommitForecast</button>
+            <button type="button" class="btn btn-outline-primary" @onclick="Commit"> CommitForecast</button>
         </div>
 
         <div class="col">
-            <input class="form-control" placeholder="Speichern nicht möglich." disabled />
+            <input class="form-control" @bind="@dbSpeichernSuccess" placeholder="Speichern nicht möglich." disabled />
         </div>
     </div>
 
@@ -155,8 +156,10 @@ else
 
 
     List<FactCase> factCases = new List<FactCase>();
+    List<FactCaseForecast> factCaseForecasts = new List<FactCaseForecast>();
     List<ResultSet>? results = null;
     ForecastParameter parameter = new ForecastParameter();
+    String dbSpeichernSuccess = String.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,7 +176,42 @@ else
         StateHasChanged();
     }
 
-   
+    public async Task Commit()
+    {
+        if (results == null) {
+            dbSpeichernSuccess = "Speichern fehlgeschlagen. Resultate Tabelle leer.";
+            StateHasChanged();
+            return; }
+        try
+        {
+            foreach (var result in results)
+            {
+                string formattedDate = result.Date.ToString("yyyyMMdd");
+                int dateAsInt = Convert.ToInt32(formattedDate);
+
+                factCaseForecasts.Add(new FactCaseForecast
+                {
+                    DateId = dateAsInt,
+                    SummeVonEingangNeuForecast = result.Value
+                });
+            }
+
+            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
+            dbSpeichernSuccess = "Erfolgreich gespeichert";
+            StateHasChanged();
+        }
+        catch
+        {
+            dbSpeichernSuccess = "Speichern fehlgeschlagen";
+            StateHasChanged();
+        }
+
+
+
+
+    }
+
+
 
 
 
