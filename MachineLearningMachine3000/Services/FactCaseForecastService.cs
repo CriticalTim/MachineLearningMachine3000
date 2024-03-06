@@ -18,15 +18,20 @@ namespace MachineLearningMachine3000.Services
             return cases;
         }
 
-        public async Task<List<FactCaseForecast>> InsertFactCaseForecast(List<FactCaseForecast> factCaseForecasts)
+        public async Task InsertFactCaseForecast(List<FactCaseForecast> factCaseForecasts)
         {
-            _context.FactCasesForecast.RemoveRange();
-            await _context.SaveChangesAsync();
+            //_context.FactCasesForecast.RemoveRange();
+            //await _context.SaveChangesAsync();
 
             _context.FactCasesForecast.AddRange(factCaseForecasts);
             await _context.SaveChangesAsync();
+;
+        }
 
-            return factCaseForecasts;
+        public async Task InsertONEFactCaseForecast(FactCaseForecast factCaseForecast)
+        {
+            _context.FactCasesForecast.Add(factCaseForecast);
+            await _context.SaveChangesAsync();
         }
 
     }

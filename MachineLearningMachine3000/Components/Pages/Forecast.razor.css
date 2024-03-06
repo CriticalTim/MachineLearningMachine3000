@@ -9,14 +9,14 @@
 .table1 {
     left:100%;
     height: 50vh;
-    width: 20vh;
+    width: 30vh;
     overflow:auto;
     margin: 5px 10px 5px 10px;
 }
 .table2 {
     right: 0;
     height: 50vh;
-    width: 20vh;
+    width: 30vh;
     overflow:auto;
     margin: 5px 10px 5px 10px;
 }
