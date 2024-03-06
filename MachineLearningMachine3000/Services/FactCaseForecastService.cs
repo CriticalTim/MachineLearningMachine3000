@@ -30,7 +30,7 @@ namespace MachineLearningMachine3000.Services
 
         public async Task InsertONEFactCaseForecast(FactCaseForecast factCaseForecast)
         {
-            _context.FactCasesForecast.Add(factCaseForecast);
+            await _context.FactCasesForecast.AddAsync(factCaseForecast);
             await _context.SaveChangesAsync();
         }
 
