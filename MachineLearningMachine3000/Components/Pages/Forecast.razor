@@ -234,8 +234,9 @@ else
                     SummeVonEingangNeuForecast = result.Value
                 });
             }
+            
+            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
 
-            await FactCaseForecastService.InsertONEFactCaseForecast(factCaseForecasts.LastOrDefault());
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
             resultsNeu = calc.ForecastRecalculate(factCaseForecasts, parameter);
@@ -254,7 +255,7 @@ else
 
     async Task ParameterTuning()
     {
-        //factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
+        factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
 
         ////neue Parameter
 

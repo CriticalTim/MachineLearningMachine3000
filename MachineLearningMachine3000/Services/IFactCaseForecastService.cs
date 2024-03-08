@@ -7,5 +7,6 @@ namespace MachineLearningMachine3000.Services
         Task<List<FactCaseForecast>> GetFactCaseForecastsAsync();
         Task InsertONEFactCaseForecast(FactCaseForecast factCaseForecast);
         Task InsertFactCaseForecast(List<FactCaseForecast> factCaseForecasts);
+        Task DeleteTableContent();
     }
 }
