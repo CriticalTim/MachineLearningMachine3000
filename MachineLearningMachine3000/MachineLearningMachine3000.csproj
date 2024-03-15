@@ -25,4 +25,8 @@
     <PackageReference Include="Microsoft.ML.TimeSeries" Version="3.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MachineLearningMachine3000.Shared\MachineLearningMachine3000.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
