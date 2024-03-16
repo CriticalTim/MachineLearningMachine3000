@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineLearningMachine3000", "MachineLearningMachine3000\MachineLearningMachine3000.csproj", "{B83CECBF-6BA5-4183-9FB1-74210A850D8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineLearningMachine3000.Shared", "MachineLearningMachine3000.Shared\MachineLearningMachine3000.Shared.csproj", "{518668F0-6114-4F88-9017-AC7744D0EC93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineLearningMachine3000.Shared", "MachineLearningMachine3000.Shared\MachineLearningMachine3000.Shared.csproj", "{518668F0-6114-4F88-9017-AC7744D0EC93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineLearningMachine3000.Client", "MachineLearningMachine3000.Client\MachineLearningMachine3000.Client.csproj", "{8271442D-EA16-4A2B-AA8E-39C886CD9ED2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{518668F0-6114-4F88-9017-AC7744D0EC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{518668F0-6114-4F88-9017-AC7744D0EC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{518668F0-6114-4F88-9017-AC7744D0EC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8271442D-EA16-4A2B-AA8E-39C886CD9ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8271442D-EA16-4A2B-AA8E-39C886CD9ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8271442D-EA16-4A2B-AA8E-39C886CD9ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8271442D-EA16-4A2B-AA8E-39C886CD9ED2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
