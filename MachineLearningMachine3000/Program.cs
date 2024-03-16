@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -31,6 +32,7 @@ if (!app.Environment.IsDevelopment())
 else
 {
     app.UseWebAssemblyDebugging();
+    //app.UseMigrationsEndPoint();
 }
 
 app.UseHttpsRedirection();
@@ -38,7 +40,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+
+
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(MachineLearningMachine3000.Client._Imports).Assembly);
+
+// Add additional endpoints required by the Identity /Account Razor components.
+//app.MapAdditionalIdentityEndpoints();
 
 app.Run();
