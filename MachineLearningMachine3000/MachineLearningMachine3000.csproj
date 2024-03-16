@@ -10,6 +10,7 @@
     <PackageReference Include="Blazor.Bootstrap" Version="2.0.0" />
     <PackageReference Include="Blazorise.Charts" Version="1.4.2" />
     <PackageReference Include="ChartJs.Blazor.Fork" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MachineLearningMachine3000.Client\MachineLearningMachine3000.Client.csproj" />
     <ProjectReference Include="..\MachineLearningMachine3000.Shared\MachineLearningMachine3000.Shared.csproj" />
   </ItemGroup>
 
