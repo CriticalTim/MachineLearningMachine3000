@@ -1,13 +1,14 @@
-﻿using MachineLearningMachine3000.Data;
+﻿using MachineLearningMachine3000.Client.Data;
+using MachineLearningMachine3000.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace MachineLearningMachine3000.Services
 {
     public class FactCaseForecastService : IFactCaseForecastService
     {
-        private readonly DataContext _context;
+        private readonly DataContextLocal _context;
 
-        public FactCaseForecastService(DataContext context)
+        public FactCaseForecastService(DataContextLocal context)
         {
             _context = context;
         }

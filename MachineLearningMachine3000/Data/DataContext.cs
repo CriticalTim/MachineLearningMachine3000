@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MachineLearningMachine3000.Shared;
 
 namespace MachineLearningMachine3000.Data
 {
@@ -10,8 +11,6 @@ namespace MachineLearningMachine3000.Data
         }
 
         public DbSet<FactCase> FactCases { get; set; }
-
-        public DbSet<FactCaseForecast> FactCasesForecast { get; set; }
 
     }
 }

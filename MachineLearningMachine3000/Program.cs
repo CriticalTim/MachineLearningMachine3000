@@ -13,7 +13,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HeringerDBConnection")));
 
 builder.Services.AddScoped<IFactCaseService, FactCaseService>();
 builder.Services.AddScoped<IFactCaseForecastService, FactCaseForecastService>();

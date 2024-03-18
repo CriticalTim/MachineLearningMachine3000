@@ -1,13 +1,13 @@
 ﻿@page "/forecast"
-@rendermode @(new InteractiveServerRenderMode(prerender: false))
-@attribute [StreamRendering]
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 
 @inject IFactCaseService FactCaseService
 @inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
 
-@using Blazorise.Charts;
+
 
 @using MachineLearningMachine3000.Forecast;
 @using MachineLearningMachine3000.Data;
