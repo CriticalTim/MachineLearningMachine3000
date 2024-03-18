@@ -1,9 +1,12 @@
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
-using MachineLearningMachine3000.Forecast;
+using MachineLearningMachine3000.Client.Forecast;
 using MachineLearningMachine3000.Services;
+using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using MachineLearningMachine3000.Client.Data;
+using MachineLearningMachine3000.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +15,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddControllers();
+
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("HeringerDBConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+   ));
 
 builder.Services.AddScoped<IFactCaseService, FactCaseService>();
-builder.Services.AddScoped<IFactCaseForecastService, FactCaseForecastService>();
+
 builder.Services.AddScoped<Calculation>();
 
 
@@ -37,10 +43,10 @@ else
 
 app.UseHttpsRedirection();
 
+app.MapControllers();
+
 app.UseStaticFiles();
 app.UseAntiforgery();
-
-
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

@@ -1,18 +1,10 @@
 ﻿using Microsoft.ML;
-using Microsoft.ML.Data;
-using Microsoft.ML.TimeSeries;
 using Microsoft.ML.Transforms.TimeSeries;
-//using OxyPlot;
-//using OxyPlot.Series;
-using System.IO;
 using System.Data;
-using MachineLearningMachine3000.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System;
-using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using MachineLearningMachine3000.Shared.Entities;
 
-namespace MachineLearningMachine3000.Forecast
+namespace MachineLearningMachine3000.Client.Forecast
 {
     public class Calculation
     {

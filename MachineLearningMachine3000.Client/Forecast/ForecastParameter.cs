@@ -1,4 +1,4 @@
-﻿namespace MachineLearningMachine3000.Forecast
+﻿namespace MachineLearningMachine3000.Client.Forecast
 {
     public class ForecastParameter
     {

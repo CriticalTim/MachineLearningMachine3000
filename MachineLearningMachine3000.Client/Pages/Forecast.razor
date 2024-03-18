@@ -3,15 +3,18 @@
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 
-@inject IFactCaseService FactCaseService
+@inject IIndexedDbFactory DbFactory
+@*@inject IFactCaseService FactCaseService*@
 @inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
+@inject HttpClient Http
 
 
 
-@using MachineLearningMachine3000.Forecast;
-@using MachineLearningMachine3000.Data;
-@using MachineLearningMachine3000.Services;
+@using MachineLearningMachine3000.Client.Forecast;
+@using MachineLearningMachine3000.Client.Data;
+@using MachineLearningMachine3000.Shared.Entities;
+@using MachineLearningMachine3000.Client.Services;
 
 <PageTitle>Foracast und Datenview</PageTitle>
 
@@ -121,7 +124,7 @@
 
 
     @if (resultsNeu != null)
-    { 
+    {
         <div class="containerbla">
             <h1>Forecast Neu</h1>
             <hr />
@@ -203,7 +206,8 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        factCases = await FactCaseService.GetFactCasesAsync();
+        //factCases = await FactCaseService.GetFactCasesAsync();
+        var result = await Http.GetFromJsonAsync<List<FactCase>>("api/forecast");
 
     }
 
@@ -234,8 +238,17 @@ else
                     SummeVonEingangNeuForecast = result.Value
                 });
             }
-            
-            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
+
+            using (var db = await this.DbFactory.Create<DataContextLocal>())
+            {
+                foreach(var factCaseForecast in factCaseForecasts)
+                {
+                    db.FactCasesForecast.Add(factCaseForecast);
+                    await db.SaveChanges();
+                }
+
+            }
+            //2await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
 
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
@@ -255,7 +268,13 @@ else
 
     async Task ParameterTuning()
     {
-        factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
+
+        using (var db = await DbFactory.Create<DataContextLocal>())
+        {
+            factCaseForecasts = db.FactCasesForecast.ToList();
+        }
+
+        //factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
 
         ////neue Parameter
 

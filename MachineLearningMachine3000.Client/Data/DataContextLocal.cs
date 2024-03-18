@@ -1,16 +1,16 @@
-﻿using MachineLearningMachine3000.Data;
+﻿using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using Microsoft.JSInterop;
+using System.ComponentModel.DataAnnotations;
+using Blazor.IndexedDB.Framework;
 
 namespace MachineLearningMachine3000.Client.Data
 {
-    public class DataContextLocal : DbContext
+    public class DataContextLocal : IndexedDb
     {
-        public DataContextLocal(DbContextOptions<DataContextLocal> option) : base(option)
-        {
-
-        }
-        public DbSet<FactCaseForecast> FactCasesForecast { get; set; }
+        public DataContextLocal(IJSRuntime jSRuntime, string name, int version) : base(jSRuntime, name, version) { }
+        public IndexedSet<FactCaseForecast> FactCasesForecast { get; set; }
 
     }
 }

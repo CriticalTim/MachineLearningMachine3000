@@ -1,4 +1,5 @@
-﻿using MachineLearningMachine3000.Data;
+﻿using MachineLearningMachine3000.Shared.Entities;
+using MachineLearningMachine3000.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MachineLearningMachine3000.Shared;
+using MachineLearningMachine3000.Shared.Entities;
 
 namespace MachineLearningMachine3000.Data
 {
