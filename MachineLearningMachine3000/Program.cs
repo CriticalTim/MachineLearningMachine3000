@@ -23,7 +23,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<IFactCaseService, FactCaseService>();
 
-builder.Services.AddScoped<Calculation>();
+
 
 
 var app = builder.Build();

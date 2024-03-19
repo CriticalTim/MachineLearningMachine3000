@@ -7,9 +7,8 @@ using Blazor.IndexedDB.Framework;
 
 namespace MachineLearningMachine3000.Client.Data
 {
-    public class DataContextLocal : IndexedDb
+    public class DataContextLocal(IJSRuntime jSRuntime, string name, int version) : IndexedDb(jSRuntime, name, version)
     {
-        public DataContextLocal(IJSRuntime jSRuntime, string name, int version) : base(jSRuntime, name, version) { }
         public IndexedSet<FactCaseForecast> FactCasesForecast { get; set; }
 
     }

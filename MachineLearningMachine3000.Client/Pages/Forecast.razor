@@ -5,7 +5,7 @@
 
 @inject IIndexedDbFactory DbFactory
 @*@inject IFactCaseService FactCaseService*@
-@inject IFactCaseForecastService FactCaseForecastService
+@*@inject IFactCaseForecastService FactCaseForecastService*@
 @inject Calculation calc
 @inject HttpClient Http
 
@@ -207,7 +207,7 @@ else
     {
 
         //factCases = await FactCaseService.GetFactCasesAsync();
-        var result = await Http.GetFromJsonAsync<List<FactCase>>("api/forecast");
+        factCases = await Http.GetFromJsonAsync<List<FactCase>>("api/Forecast");
 
     }
 
@@ -239,23 +239,28 @@ else
                 });
             }
 
+
+
+            //await Http.PutAsJsonAsync("api/Forecast", factCaseForecasts);
+
+
             using (var db = await this.DbFactory.Create<DataContextLocal>())
             {
-                foreach(var factCaseForecast in factCaseForecasts)
+                foreach (var factCaseForecast in factCaseForecasts)
                 {
                     db.FactCasesForecast.Add(factCaseForecast);
                     await db.SaveChanges();
                 }
 
             }
-            //2await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
+            //await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
 
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
             resultsNeu = calc.ForecastRecalculate(factCaseForecasts, parameter);
             StateHasChanged();
         }
-        catch
+        catch(Exception ex)
         {
             dbSpeichernSuccess = "Speichern fehlgeschlagen";
             StateHasChanged();

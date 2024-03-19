@@ -21,9 +21,16 @@ namespace MachineLearningMachine3000.Controllers
         public async Task<ActionResult<List<FactCase>>> GetFactCasesControllerAsync()
         {
             var result = await _dataContext.FactCases.ToListAsync();
-            return result;
+            return Ok(result);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<List<FactCase>>> PostFactCasesControllerAsync(List<FactCase> factCases)
+        {
+            _dataContext.FactCases.AddRange(factCases);
+            await _dataContext.SaveChangesAsync();
+            return Ok(factCases);
+        }
 
 
 
