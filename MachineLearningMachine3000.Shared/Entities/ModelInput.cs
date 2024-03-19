@@ -1,7 +1,7 @@
 ﻿using Microsoft.ML.Data;
 using System.IO;
 
-namespace MachineLearningMachine3000.Client.Forecast
+namespace MachineLearningMachine3000.Shared
 {
     public class ModelInput
     {

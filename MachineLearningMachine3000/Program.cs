@@ -1,3 +1,4 @@
+using MachineLearningMachine3000.Client.Forecast;
 using MachineLearningMachine3000.Client.Services;
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddDbContext<DataContextLocal>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+builder.Services.AddScoped<Calculation>();
 
 var app = builder.Build();
 
