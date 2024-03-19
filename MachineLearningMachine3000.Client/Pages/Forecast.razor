@@ -3,9 +3,7 @@
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 
-@inject IIndexedDbFactory DbFactory
-@*@inject IFactCaseService FactCaseService*@
-@*@inject IFactCaseForecastService FactCaseForecastService*@
+@inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
 @inject HttpClient Http
 
@@ -243,17 +241,7 @@ else
 
             //await Http.PutAsJsonAsync("api/Forecast", factCaseForecasts);
 
-
-            using (var db = await this.DbFactory.Create<DataContextLocal>())
-            {
-                foreach (var factCaseForecast in factCaseForecasts)
-                {
-                    db.FactCasesForecast.Add(factCaseForecast);
-                    await db.SaveChanges();
-                }
-
-            }
-            //await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
+            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
 
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
@@ -274,12 +262,7 @@ else
     async Task ParameterTuning()
     {
 
-        using (var db = await DbFactory.Create<DataContextLocal>())
-        {
-            factCaseForecasts = db.FactCasesForecast.ToList();
-        }
-
-        //factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
+        factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
 
         ////neue Parameter
 

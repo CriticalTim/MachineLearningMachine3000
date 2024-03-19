@@ -6,9 +6,9 @@ namespace MachineLearningMachine3000.Client.Forecast
     public class ModelInput
     {
         [LoadColumn(0)]
-        public float Value { get; set; }
+        public DateTime Time { get; set; }
 
         [LoadColumn(1)]
-        public DateTime Time { get; set; }
+        public float Value { get; set; }
     }
 }

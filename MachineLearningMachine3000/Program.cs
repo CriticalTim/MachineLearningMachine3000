@@ -1,12 +1,9 @@
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
-using MachineLearningMachine3000.Client.Forecast;
 using MachineLearningMachine3000.Services;
-using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using MachineLearningMachine3000.Client.Data;
-using MachineLearningMachine3000.Client.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +15,11 @@ builder.Services.AddRazorComponents()
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HeringerDBConnection")
+   ));
+
+builder.Services.AddDbContext<DataContextLocal>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HeringerDBConnection")
    ));
 
 builder.Services.AddScoped<IFactCaseService, FactCaseService>();
