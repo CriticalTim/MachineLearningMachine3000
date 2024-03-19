@@ -5,26 +5,22 @@
 namespace MachineLearningMachine3000.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMig : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "DP_FC_156");
-
             migrationBuilder.CreateTable(
-                name: "Fact_Cases",
-                schema: "DP_FC_156",
+                name: "FactCasesForecast",
                 columns: table => new
                 {
-                    DateId = table.Column<int>(type: "int", nullable: false),
-                    ServiceID_ID = table.Column<int>(type: "int", nullable: false),
-                    Summe_von_Eingang_Neu = table.Column<int>(type: "int", nullable: false),
-                    Summe_von_Eingang_Aktiv = table.Column<int>(type: "int", nullable: false)
+                    DateId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SummeVonEingangNeuForecast = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_FactCasesForecast", x => x.DateId);
                 });
         }
 
@@ -32,8 +28,7 @@ namespace MachineLearningMachine3000.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Fact_Cases",
-                schema: "DP_FC_156");
+                name: "FactCasesForecast");
         }
     }
 }

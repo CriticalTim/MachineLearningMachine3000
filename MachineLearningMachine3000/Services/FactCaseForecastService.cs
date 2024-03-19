@@ -1,4 +1,4 @@
-﻿using MachineLearningMachine3000.Client.Data;
+﻿using MachineLearningMachine3000.Data;
 using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 

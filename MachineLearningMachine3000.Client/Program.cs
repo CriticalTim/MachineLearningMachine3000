@@ -1,12 +1,8 @@
 using MachineLearningMachine3000.Client.Forecast;
-using MachineLearningMachine3000.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-
-builder.Services.AddScoped<IFactCaseForecastService, FactCaseForecastService>();
 
 builder.Services.AddScoped<Calculation>();
 

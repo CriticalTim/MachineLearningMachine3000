@@ -1,8 +1,9 @@
+using MachineLearningMachine3000.Client.Services;
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
 using MachineLearningMachine3000.Services;
 using Microsoft.EntityFrameworkCore;
-using MachineLearningMachine3000.Client.Data;
+using Newtonsoft.Json.Linq;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +20,8 @@ builder.Services.AddDbContext<DataContext>(options =>
    ));
 
 builder.Services.AddDbContext<DataContextLocal>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("HeringerDBConnection")
-   ));
-
-builder.Services.AddScoped<IFactCaseService, FactCaseService>();
-
-
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+));
 
 var app = builder.Build();
 

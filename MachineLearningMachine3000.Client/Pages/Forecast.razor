@@ -3,16 +3,12 @@
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 
-@inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
 @inject HttpClient Http
 
-
-
 @using MachineLearningMachine3000.Client.Forecast;
-@using MachineLearningMachine3000.Client.Data;
 @using MachineLearningMachine3000.Shared.Entities;
-@using MachineLearningMachine3000.Client.Services;
+
 
 <PageTitle>Foracast und Datenview</PageTitle>
 
@@ -204,8 +200,8 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        //factCases = await FactCaseService.GetFactCasesAsync();
-        factCases = await Http.GetFromJsonAsync<List<FactCase>>("api/Forecast");
+        
+        factCases = await Http.GetFromJsonAsync<List<FactCase>>("api/FactCase");
 
     }
 
@@ -239,9 +235,7 @@ else
 
 
 
-            //await Http.PutAsJsonAsync("api/Forecast", factCaseForecasts);
-
-            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
+            await Http.PostAsJsonAsync("api/Forecast", factCaseForecasts);
 
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
@@ -262,7 +256,7 @@ else
     async Task ParameterTuning()
     {
 
-        factCaseForecasts = await FactCaseForecastService.GetFactCaseForecastsAsync();
+        
 
         ////neue Parameter
 

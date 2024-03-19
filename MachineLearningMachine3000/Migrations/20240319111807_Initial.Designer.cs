@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MachineLearningMachine3000.Migrations
 {
-    [DbContext(typeof(DataContext))]
-    [Migration("20240318075334_InitialMig")]
-    partial class InitialMig
+    [DbContext(typeof(DataContextLocal))]
+    [Migration("20240319111807_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,24 +24,20 @@ namespace MachineLearningMachine3000.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MachineLearningMachine3000.Shared.Entities.FactCase", b =>
+            modelBuilder.Entity("MachineLearningMachine3000.Shared.Entities.FactCaseForecast", b =>
                 {
                     b.Property<int>("DateId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ServiceIdId")
-                        .HasColumnType("int")
-                        .HasColumnName("ServiceID_ID");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DateId"));
 
-                    b.Property<int>("SummeVonEingangAktiv")
-                        .HasColumnType("int")
-                        .HasColumnName("Summe_von_Eingang_Aktiv");
+                    b.Property<int>("SummeVonEingangNeuForecast")
+                        .HasColumnType("int");
 
-                    b.Property<int>("SummeVonEingangNeu")
-                        .HasColumnType("int")
-                        .HasColumnName("Summe_von_Eingang_Neu");
+                    b.HasKey("DateId");
 
-                    b.ToTable("Fact_Cases", "DP_FC_156");
+                    b.ToTable("FactCasesForecast");
                 });
 #pragma warning restore 612, 618
         }
