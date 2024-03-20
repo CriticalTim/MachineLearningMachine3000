@@ -1,7 +1,7 @@
 ﻿using Microsoft.ML.Data;
 using System.IO;
 
-namespace MachineLearningMachine3000.Shared
+namespace MachineLearningMachine3000.Shared.Entities
 {
     public class ModelInput
     {

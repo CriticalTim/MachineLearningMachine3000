@@ -4,7 +4,7 @@ using System.Data;
 using System.Globalization;
 using MachineLearningMachine3000.Shared.Entities;
 
-namespace MachineLearningMachine3000.Forecast
+namespace MachineLearningMachine3000.Client.Forecast
 {
     public class Calculation
     {
