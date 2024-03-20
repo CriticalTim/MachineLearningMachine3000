@@ -2,7 +2,6 @@
 using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.ML;
 
 namespace MachineLearningMachine3000.Controllers
 {

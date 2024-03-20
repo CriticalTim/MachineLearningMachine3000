@@ -3,7 +3,6 @@ using MachineLearningMachine3000.Shared.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MachineLearningMachine3000.Services;
 
 namespace MachineLearningMachine3000.Controllers
 {

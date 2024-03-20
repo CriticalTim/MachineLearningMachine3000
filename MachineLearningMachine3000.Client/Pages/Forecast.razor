@@ -3,7 +3,8 @@
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 
-@inject HttpClient Http
+@inject IFactCaseService FactCaseService
+@inject IFactCaseForecastService FactCaseForecastService
 @inject Calculation calc
 @using MachineLearningMachine3000.Shared.Entities;
 
@@ -198,8 +199,8 @@ else
     protected override async Task OnInitializedAsync()
     {
 
-        
-        factCases = await Http.GetFromJsonAsync<List<FactCase>>("api/FactCase");
+
+        factCases = await FactCaseService.GetFactCasesAsync();
 
     }
 
@@ -233,7 +234,7 @@ else
 
 
 
-            await Http.PostAsJsonAsync("api/Forecast", factCaseForecasts);
+            await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
 
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
@@ -254,7 +255,7 @@ else
     async Task ParameterTuning()
     {
 
-        
+
 
         ////neue Parameter
 
