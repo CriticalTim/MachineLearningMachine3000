@@ -1,6 +1,7 @@
 ﻿
 .table-container {
     display: flex;
+    height: 90vh;
 }
 .containerbla {
     display: flex;

@@ -1,7 +1,6 @@
-
 using MachineLearningMachine3000.Components;
 using MachineLearningMachine3000.Data;
-
+using MachineLearningMachine3000.Forecast;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -23,6 +22,7 @@ builder.Services.AddDbContext<DataContextLocal>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
+builder.Services.AddScoped<Calculation>();
 
 var app = builder.Build();
 
