@@ -9,7 +9,7 @@ namespace MachineLearningMachine3000.Forecast
     public class Calculation
     {
         
-        public List<ResultSet> ForecastCalculate(List<FactCase> factCases, ForecastParameter parameter)
+        public async Task<List<ResultSet>> ForecastCalculate(List<FactCase> factCases, ForecastParameter parameter)
         {
             
             List<ModelInput> data = new List<ModelInput>();

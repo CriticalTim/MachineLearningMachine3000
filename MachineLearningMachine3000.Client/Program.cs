@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-
+builder.Services.AddScoped<ICalculationService, CalculationService>();
 builder.Services.AddScoped<IFactCaseService, FactCaseService>();
 builder.Services.AddScoped<IFactCaseForecastService, FactCaseForecastService>();
 

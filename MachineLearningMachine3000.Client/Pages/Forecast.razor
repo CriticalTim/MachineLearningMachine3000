@@ -5,7 +5,7 @@
 
 @inject IFactCaseService FactCaseService
 @inject IFactCaseForecastService FactCaseForecastService
-@inject Calculation calc
+@inject ICalculationService calc
 @using MachineLearningMachine3000.Shared.Entities;
 
 
@@ -196,6 +196,9 @@ else
     ForecastParameter parameter = new ForecastParameter();
     String dbSpeichernSuccess = String.Empty;
 
+    ResultSetParameterWrapper forecastParameterWrapper = new ResultSetParameterWrapper();
+    ResultSetParameterWrapper forecastParameterWrapperNew = new ResultSetParameterWrapper();
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -204,9 +207,13 @@ else
 
     }
 
-    void Calculate()
+    async Task Calculate()
     {
-        results = calc.ForecastCalculate(factCases, parameter);
+        forecastParameterWrapper.FactCases = factCases;
+        forecastParameterWrapper.ForecastParameter = parameter;
+
+        forecastParameterWrapperNew = await calc.ServiceGetCalculation(forecastParameterWrapper);
+        results = forecastParameterWrapperNew.ResultSet;
         StateHasChanged();
     }
 
@@ -235,10 +242,14 @@ else
 
 
             await FactCaseForecastService.InsertFactCaseForecast(factCaseForecasts);
-
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
-            resultsNeu = calc.ForecastRecalculate(factCaseForecasts, parameter);
+
+            forecastParameterWrapper.FactCaseForecasts = factCaseForecasts;
+            forecastParameterWrapper.ForecastParameter = parameter;
+
+            forecastParameterWrapperNew = await calc.ServiceGetRecalculation(forecastParameterWrapper);
+            resultsNeu = forecastParameterWrapperNew.ResultSet;
             StateHasChanged();
         }
         catch(Exception ex)

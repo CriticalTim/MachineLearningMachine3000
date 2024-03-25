@@ -11,21 +11,23 @@ namespace MachineLearningMachine3000.Controllers
     {
         Calculation calc = new Calculation();
 
-        [HttpGet("calculate")]
-        public async Task<ActionResult<List<ResultSet>>> GetCalculation(List<FactCase> factCases, ForecastParameter forecastParameter)
+        [HttpPost("calculate")]
+        public async Task<ActionResult<ResultSetParameterWrapper>> GetCalculation(ResultSetParameterWrapper wrapper)
         {
-
-           var results = calc.ForecastCalculate(factCases, forecastParameter);
-           return Ok(results);
+            ResultSetParameterWrapper endresult = new ResultSetParameterWrapper();
+            var results = calc.ForecastCalculate(wrapper.FactCases, wrapper.ForecastParameter);
+            endresult.ResultSet = results; 
+           return Ok(endresult);
 
         }
 
-        [HttpGet("recalculate")]
-        public async Task<ActionResult<List<ResultSet>>> GetRecalculation(List<FactCaseForecast> factCases, ForecastParameter forecastParameter)
+        [HttpPost("recalculate")]
+        public async Task<ActionResult<ResultSetParameterWrapper>> GetRecalculation(ResultSetParameterWrapper wrapper)
         {
-
-            var results = calc.ForecastRecalculate(factCases, forecastParameter);
-            return Ok(results);
+            ResultSetParameterWrapper endresult = new ResultSetParameterWrapper();
+            var results = calc.ForecastRecalculate(wrapper.FactCaseForecasts, wrapper.ForecastParameter);
+            endresult.ResultSet = results;
+            return Ok(endresult);
 
         }
     }

@@ -4,8 +4,8 @@ namespace MachineLearningMachine3000.Client.Services
 {
     public interface ICalculationService
     {
-        Task<List<ResultSet>> ServiceGetCalculation();
-        Task<List<ResultSet>> ServiceGetRecalculation();
+        Task<ResultSetParameterWrapper> ServiceGetCalculation(ResultSetParameterWrapper wrapper);
+        Task<ResultSetParameterWrapper> ServiceGetRecalculation(ResultSetParameterWrapper wrapper);
 
     }
 }
