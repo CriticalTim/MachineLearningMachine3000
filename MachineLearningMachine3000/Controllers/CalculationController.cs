@@ -14,10 +14,20 @@ namespace MachineLearningMachine3000.Controllers
         [HttpPost("calculate")]
         public async Task<ActionResult<ResultSetParameterWrapper>> GetCalculation(ResultSetParameterWrapper wrapper)
         {
-            ResultSetParameterWrapper endresult = new ResultSetParameterWrapper();
-            var results = calc.ForecastCalculate(wrapper.FactCases, wrapper.ForecastParameter);
-            endresult.ResultSet = results; 
-           return Ok(endresult);
+            try
+            {
+                ResultSetParameterWrapper endresult = new ResultSetParameterWrapper();
+                var results = calc.ForecastCalculate(wrapper.FactCases, wrapper.ForecastParameter);
+                await Task.Delay(10000);
+
+                endresult.ResultSet = results;
+                return Ok(endresult);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
 
         }
 

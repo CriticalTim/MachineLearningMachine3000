@@ -24,6 +24,8 @@ builder.Services.AddDbContext<DataContextLocal>(options =>
 
 builder.Services.AddScoped<Calculation>();
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

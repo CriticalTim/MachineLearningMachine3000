@@ -15,7 +15,7 @@ namespace MachineLearningMachine3000.Client.Services
 
         public async Task<ResultSetParameterWrapper?> ServiceGetCalculation(ResultSetParameterWrapper wrapper)
         {
-            var response = await _httpClient.PostAsJsonAsync($"api/Calculation/calculate", wrapper);
+            var response = await _httpClient.PostAsJsonAsync("api/Calculation/calculate", wrapper);
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadFromJsonAsync<ResultSetParameterWrapper>();
