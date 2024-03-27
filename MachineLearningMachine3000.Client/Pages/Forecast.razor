@@ -229,9 +229,7 @@ else
             content.Add(new StringContent(JsonSerializer.Serialize(parameter)), nameof(forecastParameterWrapper.ForecastParameter));
         }
 
-        forecastParameterWrapperNew = await calc.ServiceGetCalculation(content);
-
-        results = forecastParameterWrapperNew.ResultSet;
+        results = await calc.ServiceGetCalculation(content);
         StateHasChanged();
     }
 
