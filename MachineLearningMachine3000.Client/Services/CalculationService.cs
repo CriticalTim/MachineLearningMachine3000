@@ -13,26 +13,16 @@ namespace MachineLearningMachine3000.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<ResultSet>?> ServiceGetCalculation(MultipartFormDataContent content)
+        public async Task<List<ResultSet>> ServiceGetCalculation(ResultSetParameterWrapper wrapper)
         {
-            var response = await _httpClient.PostAsync("api/Calculation/calculate", content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseData = await response.Content.ReadFromJsonAsync<List<ResultSet>>();
-                return responseData;
-            }
-            return null;
+            var result = await _httpClient.PostAsJsonAsync("api/Calculation/calculate", wrapper);
+            return await result.Content.ReadFromJsonAsync<List<ResultSet>>();
         }
 
-        public async Task<List<ResultSet>?> ServiceGetRecalculation(MultipartFormDataContent content)
+        public async Task<List<ResultSet>> ServiceGetRecalculation(ResultSetParameterForecastWrapper wrapper)
         {
-            var response = await _httpClient.PostAsync($"api/Calculation/recalculate", content);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseData = await response.Content.ReadFromJsonAsync<List<ResultSet>>();
-                return responseData;
-            }
-            return null;
+            var result = await _httpClient.PostAsJsonAsync("api/Calculation/recalculate", wrapper);
+            return await result.Content.ReadFromJsonAsync<List<ResultSet>>();
         }
     }
 }

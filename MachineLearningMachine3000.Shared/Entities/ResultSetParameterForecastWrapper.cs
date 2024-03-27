@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MachineLearningMachine3000.Shared.Entities
 {
-    public class ResultSetParameterWrapper
+    public class ResultSetParameterForecastWrapper
     {
 
-        public List<FactCase> FactCases { get; set; }
+        public List<FactCaseForecast> FactCasesForecast { get; set; }
 
         public ForecastParameter ForecastParameter { get; set; }
 

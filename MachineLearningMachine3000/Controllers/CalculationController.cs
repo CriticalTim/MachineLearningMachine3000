@@ -14,39 +14,14 @@ namespace MachineLearningMachine3000.Controllers
 
 
         [HttpPost("calculate")]
-        public async Task<ActionResult<List<ResultSet>>> GetCalculation()
+        public async Task<ActionResult<List<ResultSet>>> GetCalculation(ResultSetParameterWrapper wrapper)
         {
-            var endresult = new ResultSetParameterWrapper();
-
             try
             {
-                if (!Request.HasFormContentType)
-                {
-                    return BadRequest("Unsupported media type");
-                }
-
-                var form = await Request.ReadFormAsync();
+    
                 var calc = new Calculation();
 
-                // Deserialize FactCases
-                if (form.TryGetValue("FactCases", out var factCasesJson))
-                {
-                    endresult.FactCases = JsonSerializer.Deserialize<List<FactCase>>(factCasesJson);
-                }
-
-                // Deserialize ForecastParameter
-                if (form.TryGetValue("ForecastParameter", out var forecastParameterJson))
-                {
-                    endresult.ForecastParameter = JsonSerializer.Deserialize<ForecastParameter>(forecastParameterJson);
-                }
-
-                if(endresult == null || endresult.FactCases == null || endresult.ForecastParameter == null)
-                {
-                    return BadRequest("One or more Values were null");
-                }
-                var results = calc.ForecastCalculate(endresult.FactCases, endresult.ForecastParameter);
-
-               
+                var results = calc.ForecastCalculate(wrapper.FactCases, wrapper.ForecastParameter);
 
                 return Ok(results);
             }
@@ -58,15 +33,21 @@ namespace MachineLearningMachine3000.Controllers
         }
 
         [HttpPost("recalculate")]
-        public async Task<ActionResult<ResultSetParameterWrapper>> GetRecalculation(ResultSetParameterWrapper wrapper)
+        public async Task<ActionResult<List<ResultSet>>> GetRecalculation(ResultSetParameterForecastWrapper wrapper)
         {
-            ResultSetParameterWrapper endresult = new ResultSetParameterWrapper();
+            try
+            {
 
-            var results = calc.ForecastRecalculate(wrapper.FactCaseForecasts, wrapper.ForecastParameter);
+                var calc = new Calculation();
 
-            endresult.ResultSet = results;
+                var results = calc.ForecastRecalculate(wrapper.FactCasesForecast , wrapper.ForecastParameter);
 
-            return Ok(endresult);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
     }

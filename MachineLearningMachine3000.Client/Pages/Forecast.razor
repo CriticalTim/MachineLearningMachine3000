@@ -6,6 +6,7 @@
 @inject IFactCaseService FactCaseService
 @inject IFactCaseForecastService FactCaseForecastService
 @inject ICalculationService calc
+
 @using MachineLearningMachine3000.Shared.Entities;
 
 
@@ -43,108 +44,122 @@
 </form>
 
 <hr />
-<div class="table-container">
+<div class="row">
 
     @if (factCases == null)
     {
+
+        <div class="col" style="margin-top: 20%;">
         <p><em>Loading...</em></p>
+        </div>
     }
     else
     {
 
-        <div class="containerbla" style="margin-right:2%;">
+        <div class="col" style="margin-right:2%;margin-bottom:5%">
             <h1>Ausgangsdaten</h1>
             <hr />
-            <div class="table1">
 
-                <table>
-                    <thead>
+
+            <table style="width: 100%; max-height: 50vh; display: block;">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        
+                        <th>Eingänge Neu</th>
+                    </tr>
+                </thead>
+                <tbody style="display: block; max-height: 50vh; overflow-y: scroll;">
+                    @foreach (var fact in factCases)
+                    {
                         <tr>
-                            <th>Datum</th>
-                            <th>    Eingänge Neu</th>
+                            <td>@fact.DateId.ToString()</td>
+                            
+                            <td>@fact.SummeVonEingangNeu</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var fact in factCases)
-                        {
-                            <tr>
-                                <td>@fact.DateId.ToString()</td>
-                                <td><div class="vertical-line"></div></td>
-                                <td>@fact.SummeVonEingangNeu</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
+
         </div>
     }
     @if (results == null)
     {
-        <div style="margin-top: 50%;">
+        <div class="col" style="margin-top: 20%;">
             <p><em>No Forecast available..</em></p>
         </div>
 
     }
     else
     {
-        <div class="containerbla" style="margin-right:2%;">
+        <div class="col" style="margin-right:2%;margin-bottom:5%">
             <h1>Forecast</h1>
             <hr />
-            <div class="table2">
 
-                <table>
-                    <thead>
+
+            <table  style="width: 100%; max-height: 50vh; display: block;" >
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th> | </th>
+                        <th>    Eingänge Neu</th>
+                    </tr>
+                </thead>
+                <tbody style="display: block; max-height: 50vh; overflow-y: scroll;">
+                    @foreach (var result in results)
+                    {
                         <tr>
-                            <th>Datum</th>
-                            <th>    Eingänge Neu</th>
+                            <td>@result.Date.ToShortDateString()</td>
+                            <td></td>
+                            <td>@result.Value</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var result in results)
-                        {
-                            <tr>
-                                <td>@result.Date.ToShortDateString()</td>
-                                <td><div class="vertical-line"></div></td>
-                                <td>@result.Value</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
+
 
     }
 
 
-    @if (resultsNeu != null)
+    @if (resultsNeu == null)
     {
-        <div class="containerbla">
+        <div class="col" style="margin-top: 20%;">
+            <p><em>No Recalculation available..</em></p>
+        </div>
+    }
+    else
+    {
+
+
+        <div class="col" style="margin-right:2%;margin-bottom:5%" >
             <h1>Forecast Neu</h1>
             <hr />
-            <div class="table2">
 
-                <table>
-                    <thead>
+
+            <table  style="width: 100%; max-height: 50vh; display: block;" >
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>    Eingänge Neu</th>
+                    </tr>
+                </thead>
+                <tbody style="display: block; max-height: 50vh; overflow-y: scroll;">
+                    @foreach (var result in resultsNeu)
+                    {
                         <tr>
-                            <th>Datum</th>
-                            <th>    Eingänge Neu</th>
+                            <td>@result.Date.ToShortDateString()</td>
+                            <td><div class="vertical-line"></div></td>
+                            <td>@result.Value</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var result in resultsNeu)
-                        {
-                            <tr>
-                                <td>@result.Date.ToShortDateString()</td>
-                                <td><div class="vertical-line"></div></td>
-                                <td>@result.Value</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
+
         </div>
 
     }
+
 </div>
 <hr />
 @if (results != null)
@@ -212,24 +227,28 @@ else
         forecastParameterWrapper.FactCases = factCases;
         forecastParameterWrapper.ForecastParameter = parameter;
 
-        using var content = new MultipartFormDataContent();
+        //MultipartFormDataContent content = new MultipartFormDataContent();
 
         // Add FactCases to the form data.
-        if (factCases != null)
-        {
-            foreach (var factCase in factCases)
-            {
-                content.Add(new StringContent(JsonSerializer.Serialize(factCase)), nameof(forecastParameterWrapper.FactCases));
-            }
-        }
+        //if (factCases != null)
+        //{
+        //    //foreach (var factCase in factCases)
+        //    //{
+        //    //    content.Add(new StringContent(JsonSerializer.Serialize(factCase)), nameof(forecastParameterWrapper.FactCases));
+        //    //}
+        //    string contentString = JsonSerializer.Serialize(factCases);
+        //    content.Add(new StringContent(contentString), "FactCases");
 
-        // Add ForecastParameter to the form data.
-        if (parameter != null)
-        {
-            content.Add(new StringContent(JsonSerializer.Serialize(parameter)), nameof(forecastParameterWrapper.ForecastParameter));
-        }
+        //}
 
-        results = await calc.ServiceGetCalculation(content);
+        //// Add ForecastParameter to the form data.
+        //if (parameter != null)
+        //{
+        //    string contentParameterString = JsonSerializer.Serialize(parameter);
+        //    //content.Add(new StringContent(JsonSerializer.Serialize(parameter)), nameof(forecastParameterWrapper.ForecastParameter));
+        //    content.Add(new StringContent(contentParameterString), "ForecastParameter");
+
+        results = await calc.ServiceGetCalculation(forecastParameterWrapper);
         StateHasChanged();
     }
 
@@ -261,11 +280,11 @@ else
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
 
-            forecastParameterWrapper.FactCaseForecasts = factCaseForecasts;
-            forecastParameterWrapper.ForecastParameter = parameter;
+            //forecastParameterWrapper.FactCaseForecasts = factCaseForecasts;
+            //forecastParameterWrapper.ForecastParameter = parameter;
 
             // forecastParameterWrapperNew = await calc.ServiceGetRecalculation(forecastParameterWrapper);
-            resultsNeu = forecastParameterWrapperNew.ResultSet;
+            //resultsNeu = forecastParameterWrapperNew.ResultSet;
             StateHasChanged();
         }
         catch(Exception ex)
