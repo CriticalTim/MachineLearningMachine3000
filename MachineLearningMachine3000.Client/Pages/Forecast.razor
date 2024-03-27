@@ -2,7 +2,7 @@
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
-
+@using System.Text.Json
 @inject IFactCaseService FactCaseService
 @inject IFactCaseForecastService FactCaseForecastService
 @inject ICalculationService calc
@@ -212,7 +212,25 @@ else
         forecastParameterWrapper.FactCases = factCases;
         forecastParameterWrapper.ForecastParameter = parameter;
 
-        forecastParameterWrapperNew = await calc.ServiceGetCalculation(forecastParameterWrapper);
+        using var content = new MultipartFormDataContent();
+
+        // Add FactCases to the form data.
+        if (factCases != null)
+        {
+            foreach (var factCase in factCases)
+            {
+                content.Add(new StringContent(JsonSerializer.Serialize(factCase)), nameof(forecastParameterWrapper.FactCases));
+            }
+        }
+
+        // Add ForecastParameter to the form data.
+        if (parameter != null)
+        {
+            content.Add(new StringContent(JsonSerializer.Serialize(parameter)), nameof(forecastParameterWrapper.ForecastParameter));
+        }
+
+        forecastParameterWrapperNew = await calc.ServiceGetCalculation(content);
+
         results = forecastParameterWrapperNew.ResultSet;
         StateHasChanged();
     }
@@ -248,7 +266,7 @@ else
             forecastParameterWrapper.FactCaseForecasts = factCaseForecasts;
             forecastParameterWrapper.ForecastParameter = parameter;
 
-            forecastParameterWrapperNew = await calc.ServiceGetRecalculation(forecastParameterWrapper);
+            // forecastParameterWrapperNew = await calc.ServiceGetRecalculation(forecastParameterWrapper);
             resultsNeu = forecastParameterWrapperNew.ResultSet;
             StateHasChanged();
         }

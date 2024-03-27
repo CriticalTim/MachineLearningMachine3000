@@ -12,6 +12,15 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("CorsPolicy", opt => opt
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -23,8 +32,6 @@ builder.Services.AddDbContext<DataContextLocal>(options =>
 ));
 
 builder.Services.AddScoped<Calculation>();
-
-builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -42,7 +49,7 @@ else
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.UseStaticFiles();
