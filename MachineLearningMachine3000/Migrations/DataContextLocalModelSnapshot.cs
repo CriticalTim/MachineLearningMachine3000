@@ -23,16 +23,19 @@ namespace MachineLearningMachine3000.Migrations
 
             modelBuilder.Entity("MachineLearningMachine3000.Shared.Entities.FactCaseForecast", b =>
                 {
-                    b.Property<int>("DateId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DateId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DateId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SummeVonEingangNeuForecast")
                         .HasColumnType("int");
 
-                    b.HasKey("DateId");
+                    b.HasKey("Id");
 
                     b.ToTable("FactCasesForecast");
                 });

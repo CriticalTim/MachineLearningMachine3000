@@ -5,7 +5,7 @@
 namespace MachineLearningMachine3000.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,13 +14,14 @@ namespace MachineLearningMachine3000.Migrations
                 name: "FactCasesForecast",
                 columns: table => new
                 {
-                    DateId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DateId = table.Column<int>(type: "int", nullable: false),
                     SummeVonEingangNeuForecast = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FactCasesForecast", x => x.DateId);
+                    table.PrimaryKey("PK_FactCasesForecast", x => x.Id);
                 });
         }
 

@@ -3,6 +3,8 @@
 @*@attribute [StreamRendering]*@
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text.Json
+@using Syncfusion.Blazor.Charts
+
 @inject IFactCaseService FactCaseService
 @inject IFactCaseForecastService FactCaseForecastService
 @inject ICalculationService calc
@@ -50,7 +52,7 @@
     {
 
         <div class="col" style="margin-top: 20%;">
-        <p><em>Loading...</em></p>
+            <p><em>Loading...</em></p>
         </div>
     }
     else
@@ -59,13 +61,16 @@
         <div class="col" style="margin-right:2%;margin-bottom:5%">
             <h1>Ausgangsdaten</h1>
             <hr />
-
-
+            <div>
+                <label class="control-label">Datenmenge</label>
+                <input class="form-control" @bind="@factCasesCount" disabled />
+            </div>
+            <hr />
             <table style="width: 100%; max-height: 50vh; display: block;">
                 <thead>
                     <tr>
                         <th>Datum</th>
-                        
+
                         <th>Eingänge Neu</th>
                     </tr>
                 </thead>
@@ -74,7 +79,7 @@
                     {
                         <tr>
                             <td>@fact.DateId.ToString()</td>
-                            
+
                             <td>@fact.SummeVonEingangNeu</td>
                         </tr>
                     }
@@ -95,9 +100,14 @@
         <div class="col" style="margin-right:2%;margin-bottom:5%">
             <h1>Forecast</h1>
             <hr />
+            <div>
+                <label class="control-label">Datenmenge</label>
+                <input class="form-control" @bind="@resultCount" disabled />
+            </div>
+            <hr />
 
 
-            <table  style="width: 100%; max-height: 50vh; display: block;" >
+            <table style="width: 100%; max-height: 50vh; display: block;">
                 <thead>
                     <tr>
                         <th>Datum</th>
@@ -132,12 +142,15 @@
     {
 
 
-        <div class="col" style="margin-right:2%;margin-bottom:5%" >
+        <div class="col" style="margin-right:2%;margin-bottom:5%">
             <h1>Forecast Neu</h1>
             <hr />
-
-
-            <table  style="width: 100%; max-height: 50vh; display: block;" >
+            <div>
+                <label class="control-label">Datenmenge</label>
+                <input class="form-control" @bind="@resultNewCount" disabled />
+            </div>
+            <hr />
+            <table style="width: 100%; max-height: 50vh; display: block;">
                 <thead>
                     <tr>
                         <th>Datum</th>
@@ -182,18 +195,37 @@ else
     </div>
 }
 <hr />
-@if (@dbSpeichernSuccess == "Erfolgreich gespeichert")
-{
-    <div class="row">
-        <div class="col">
-            <button type="button" class="btn btn-outline-primary" @onclick="ParameterTuning"> Beste Forecast Parameter finden</button>
-        </div>
+@if(factCases == null)
+            {
 
-        <div class="col">
-            <input class="form-control" placeholder="Durch diese Aktion werden verschiedene Parameter ausgetestet bis die Vorhersage am besten zu schon bestehenden Daten past" disabled />
-        </div>
+
+<p> No Images available yet..</p>
+
+}
+else
+            {
+@*<SfChart>
+    <ChartSeriesCollection>
+        <Syncfusion.Blazor.Charts.ChartSeries DataSource="@factCases" XName="DateId" YName="SummeVonEingangNeu">
+        </Syncfusion.Blazor.Charts.ChartSeries>
+    </ChartSeriesCollection>
+</SfChart>*@
+            }
+
+
+
+@if (false@*@dbSpeichernSuccess == "Erfolgreich gespeichert"*@)
+{
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-outline-primary" @onclick="ParameterTuning"> Beste Forecast Parameter finden</button>
     </div>
-    <hr />
+
+    <div class="col">
+        <input class="form-control" placeholder="Durch diese Aktion werden verschiedene Parameter ausgetestet bis die Vorhersage am besten zu schon bestehenden Daten past" disabled />
+    </div>
+</div>
+<hr />
 }
 
 
@@ -211,15 +243,19 @@ else
     ForecastParameter parameter = new ForecastParameter();
     String dbSpeichernSuccess = String.Empty;
 
+    int factCasesCount = 0;
+    int resultCount = 0;
+    int resultNewCount = 0;
+
     ResultSetParameterWrapper forecastParameterWrapper = new ResultSetParameterWrapper();
-    ResultSetParameterWrapper forecastParameterWrapperNew = new ResultSetParameterWrapper();
+    ResultSetParameterForecastWrapper forecastParameterWrapperNew = new ResultSetParameterForecastWrapper();
 
     protected override async Task OnInitializedAsync()
     {
 
 
         factCases = await FactCaseService.GetFactCasesAsync();
-
+        factCasesCount = factCases.Count;
     }
 
     async Task Calculate()
@@ -249,6 +285,7 @@ else
         //    content.Add(new StringContent(contentParameterString), "ForecastParameter");
 
         results = await calc.ServiceGetCalculation(forecastParameterWrapper);
+        resultCount = results.Count;
         StateHasChanged();
     }
 
@@ -280,14 +317,14 @@ else
             dbSpeichernSuccess = "Erfolgreich gespeichert";
             StateHasChanged();
 
-            //forecastParameterWrapper.FactCaseForecasts = factCaseForecasts;
-            //forecastParameterWrapper.ForecastParameter = parameter;
+            forecastParameterWrapperNew.FactCasesForecast = factCaseForecasts;
+            forecastParameterWrapperNew.ForecastParameter = parameter;
 
-            // forecastParameterWrapperNew = await calc.ServiceGetRecalculation(forecastParameterWrapper);
-            //resultsNeu = forecastParameterWrapperNew.ResultSet;
+            resultsNeu = await calc.ServiceGetRecalculation(forecastParameterWrapperNew);
+            resultNewCount = resultsNeu.Count;
             StateHasChanged();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             dbSpeichernSuccess = "Speichern fehlgeschlagen";
             StateHasChanged();
